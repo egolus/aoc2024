@@ -97,14 +97,14 @@ def solve_b(data, space=None):
         robots.append((p, v))
 
     for i in range(8260):
-        grid = set()
+        grid = defaultdict(list)
         for r, robot in enumerate(robots):
             p, v = robot
             p[0] = ((p[0] + v[0]) % space[0])
             p[1] = ((p[1] + v[1]) % space[1])
-            grid.add((p[0], p[1]))
+            grid[(p[0], p[1])].append(p)
 
-        if all((38, 30+j) in grid for j in range(29)):
+        if all(len(r) < 2 for r in grid.values()):
             return i+1
 
 
