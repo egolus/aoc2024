@@ -73,7 +73,7 @@ def main():
     submit(result_a, part="a", day=day, year=year)
 
     for i, (test, true) in enumerate(test_data_b.items()):
-        result = solve_b(test, 6)
+        result = solve_b(test, 6, 12)
         print(f"result {i}: {result}\n")
         assert result == true, f"{result} != {true}"
 
@@ -152,7 +152,7 @@ def solve_a(data, size=70, steps=1024):
     return len(path)-1
 
 
-def solve_b(data, size=70):
+def solve_b(data, size=70, start=1024):
     grid = {}
     lines = data.splitlines()
     for i in range(len(lines)):
@@ -160,7 +160,10 @@ def solve_b(data, size=70):
         x, y = line.split(",")
         lines[i] = int(y), int(x)
 
-    for i in range(len(lines)):
+    for line in lines[:start]:
+        grid[line] = 0
+
+    for i in range(start, len(lines)):
         grid[lines[i]] = i
         path = astar(
             grid, (0, 0), (size, size), size+1, lambda c: size-c[0]+size-c[1])
